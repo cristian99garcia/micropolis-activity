@@ -126,12 +126,7 @@ class MicroPolisActivity(activity.Activity):
                 self.play_sound(words[1])
 
             elif command == 'QuitSimCity':
-                if not self.closed_from_game:
-                    self.closed_from_game = True
-                    print("CLOSE THIS")
-                    self.close(True)
-
-                break;
+                self.destroy()
 
     def play_sound(self, name):
         fileName = os.path.join(self._bundle_path, 'res/sounds', name.lower() + '.wav')
@@ -151,9 +146,10 @@ class MicroPolisActivity(activity.Activity):
         self.send_process('SugarShare\n')
 
     def _destroy_cb(self, window):
-        if not self.closed_from_game:
+        try:
             os.kill(self._process.pid, signal.SIGUSR1)
-            #subprocess.Popen(["kill", "-9", str(self._process.pid)])
+        except:
+            pass
 
     def _focus_in_cb(self, window, event):
         self.send_process('SugarActivate\n')
