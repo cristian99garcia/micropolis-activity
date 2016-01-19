@@ -5,6 +5,7 @@ import signal
 import subprocess
 import thread
 import fcntl
+import platform
 
 from gettext import gettext as _
 
@@ -26,6 +27,15 @@ try:
 
 except:
     WITH_PYGAME = False
+
+ARCH = "x86-64"
+if platform.machine().startswith('arm'):
+    ARCH = "arm"
+else:
+    if platform.architecture()[0] == '64bit':
+        ARCH = "x86-64"
+    else:
+        ARCH = "x86"
 
 
 def QuoteTCL(s):
@@ -81,7 +91,7 @@ class MicroPolisActivity(activity.Activity):
             win = win[:-1]
         
         # Run game
-        command = os.path.join(self._bundle_path, "res/sim")
+        command = os.path.join(self._bundle_path, "res/sim.%s" % ARCH)
 
         args = [
             command,
@@ -126,7 +136,7 @@ class MicroPolisActivity(activity.Activity):
                 self.play_sound(words[1])
 
             elif command == 'QuitSimCity':
-                self.destroy()
+                self.close(True)
 
     def play_sound(self, name):
         fileName = os.path.join(self._bundle_path, 'res/sounds', name.lower() + '.wav')
