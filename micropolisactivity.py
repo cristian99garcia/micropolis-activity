@@ -10,11 +10,13 @@ from gettext import gettext as _
 
 from gi.repository import Gtk
 
+from sugar3 import profile
 from sugar3.activity import activity
 from sugar3.activity.activity import get_bundle_path
-from sugar3 import profile
-
+from sugar3.activity.widgets import StopButton
+from sugar3.activity.widgets import ActivityToolbarButton
 from sugar3.presence import presenceservice
+from sugar3.graphics.toolbarbox import ToolbarBox
 
 WITH_PYGAME = True
 
@@ -46,6 +48,7 @@ class MicroPolisActivity(activity.Activity):
 
         self._bundle_path = get_bundle_path()
 
+        self.setup_toolbar()
         self.load_libs_dirs()
 
         self.socket = Gtk.Socket()
@@ -53,6 +56,19 @@ class MicroPolisActivity(activity.Activity):
         self.set_canvas(self.socket)
 
         self.show_all()
+
+    def setup_toolbar(self):
+        toolbarbox = ToolbarBox()
+        self.set_toolbar_box(toolbarbox)
+
+        toolbarbox.toolbar.insert(ActivityToolbarButton(self), -1)
+
+        separator = Gtk.SeparatorToolItem()
+        separator.props.draw = False
+        separator.set_expand(True)
+        toolbarbox.toolbar.insert(separator, -1)
+
+        toolbarbox.toolbar.insert(StopButton(self), -1)
 
     def load_libs_dirs(self):
         os.environ["SINHOME"] = self._bundle_path
