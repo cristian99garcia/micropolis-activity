@@ -82,7 +82,7 @@ class MicroPolisActivity(activity.Activity):
 
     def load_libs_dirs(self):
         os.environ["SINHOME"] = self._bundle_path
-        os.environ['LD_LIBRARY_PATH'] = os.path.join(self._bundle_path, "libs")
+        os.environ['LD_LIBRARY_PATH'] = os.path.join(self._bundle_path, "libs/", ARCH)
 
     def _start_all_cb(self, widget):
         win = str(self.socket.get_id())
