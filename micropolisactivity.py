@@ -135,7 +135,7 @@ class MicroPolisActivity(activity.Activity):
             if command == 'PlaySound':
                 self.play_sound(words[1])
 
-            elif command == 'QuitSimCity':
+            elif command == 'Quit Micropolis':
                 self.close(True)
 
     def play_sound(self, name):
